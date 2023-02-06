@@ -33,3 +33,4 @@
           - NetworkManager-wifi 
           - microshift-awx-operator-manifests
         microshift_image_compose_type: edge-installer
+        microshift_image_pull_secret: "{{ openshift_pull_secret }}"
