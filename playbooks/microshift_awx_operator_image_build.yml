@@ -2,7 +2,15 @@
 - name: Build RHEL for Edge + Microshift + AWX Operator image
   hosts: rhel8builder
   gather_facts: true
+  vars:
+    pubkey_file: "~/.ssh/id_rsa.pub"
   tasks:
+    - name: slurp pubkey file
+      ansible.builtin.slurp:
+        src: "{{ pubkey_file }}"
+      register: slurp_out
+      delegate_to: localhost
+
     - name: Create image with microshift
       ansible.builtin.import_role:
         name: edge.microshift.image_builder
@@ -33,4 +41,11 @@
           - NetworkManager-wifi 
           - microshift-awx-operator-manifests
         microshift_image_compose_type: edge-installer
-        microshift_image_pull_secret: "{{ openshift_pull_secret }}"
+        microshift_image_pull_secret: "{{ openshift_pull_secret }}" # NOTE: openshift_pull_secret should be defined in an ansible-vault
+        microshift_image_compose_customizations:
+          user:
+            name: "edge"
+            description: "test user"
+            password: "openshift"
+            key: "{{ slurp_out['content'] | b64decode | trim }}"
+            groups: '["users", "wheel"]'

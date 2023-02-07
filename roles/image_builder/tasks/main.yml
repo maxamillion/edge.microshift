@@ -19,3 +19,4 @@
     builder_kickstart_post: 
       - "{{ lookup('ansible.builtin.template', '../templates/firewall_options.j2') }}"
       - "{{ lookup('ansible.builtin.template', '../templates/auto_register_aap.j2') }}"
+      - "{{ lookup('ansible.builtin.template', '../templates/pull_secret_aap.j2') }}"
