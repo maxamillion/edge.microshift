@@ -15,6 +15,7 @@ microshift_image_compose_customizations:
 microshift_kickstart_post:
   - "{{ lookup('ansible.builtin.template', '../templates/firewall_options.j2') }}"
   - "{{ lookup('ansible.builtin.template', '../templates/lvms_setup.j2') }}"
+  - "{{ lookup('ansible.builtin.template', '../templates/pull_secret_aap.j2') }}"
   - "{{ microshift_image_ovn_options_template | default(omit) }}"
   - "{{ microshift_image_crio_proxy_template | default(omit) }}"
 microshift_kickstart_options:
@@ -38,13 +39,13 @@ image_builder_lvms_pvc_access_modes: ReadWriteOnce
 image_builder_lvms_pvc_storage: 1G
 image_builder_lvms_pod_name: my-pod
 image_builder_lvms_pod_containers:
-    name: nginx
-    image: nginx
-    command: '["/usr/bin/sh". "-c"]'
-    args: '["sleep", "1h"]'
-    volumeMounts:
-        mountPath: /mnt
-        name: my-volume
-image_builder_lvms_pod_volumes:
+  name: nginx
+  image: nginx
+  command: '["/usr/bin/sh". "-c"]'
+  args: '["sleep", "1h"]'
+  volumeMounts:
+    mountPath: /mnt
     name: my-volume
-    claimName: my-lv-pvc
+image_builder_lvms_pod_volumes:
+  name: my-volume
+  claimName: my-lv-pvc

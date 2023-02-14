@@ -49,3 +49,7 @@
             password: "openshift"
             key: "{{ slurp_out['content'] | b64decode | trim }}"
             groups: '["users", "wheel"]'
+          services:
+            enabled:
+              - sshd
+              - microshift
