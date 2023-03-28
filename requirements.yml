@@ -1,5 +1,3 @@
 ---
 collections:
-  - community.general
-  - ansible.posix
   - git+https://github.com/ansible-collections/edge.microshift.git
